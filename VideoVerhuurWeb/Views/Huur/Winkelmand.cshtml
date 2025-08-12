@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Film>
+@{
+    ViewData["Title"] = "Winkelmand";
+}
+
+<h1>Winkelmandje</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Titel</th>
+            <th>Prijs</th>
+            <th>Verwijderen</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var film in Model)
+        {
+            <tr>
+                <td>@film.Titel</td>
+                <td>@film.Prijs</td>
+                <td>
+
+                    <a asp-action="VerwijderPagina" asp-controller="HuurController" asp-route-id="@film.FilmId">
+                            <img src="~/images/delete.jpg" alt="UitMantje halen" />
+                        </a>
+                    
+                </td>
+            </tr>
+        }
+
+</table>
+

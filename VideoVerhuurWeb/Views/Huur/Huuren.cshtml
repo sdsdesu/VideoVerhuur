@@ -1,0 +1,39 @@
+﻿@model RekeningViewModel
+@{
+    ViewData["Title"] = "Huuren";
+}
+
+<h1>Afrekenen</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Titel</th>
+            <th>Prijs</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var film in Model.Films)
+        {
+            <tr>
+                <td>@film.Titel</td>
+                <td>€ @film.Prijs</td>
+            </tr>
+            
+        
+        }
+        <tr>
+            <td><strong>Totaal</strong></td>
+            <td><strong>€ @Model.TotaalPrijs</strong></td>
+    </tbody>
+</table>
+
+<div>Word gefacteerd aan:</div>
+<p><strong>@Model.Naam</strong></p>
+<p><strong>@Model.Adres</strong></p>
+<p><strong>@Model.Gemeente</strong></p>
+
+<br />
+<br/>
+
+

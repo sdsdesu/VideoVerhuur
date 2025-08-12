@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Genre>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div>Klik op het gewenste GENRE</div>
+@foreach (var genre in Model)
+{
+
+    <a asp-action="Films" asp-controller="Huurcontroler" asp-route-id="@genre.GenreId">@genre.GenreNaam </a>
+
+}

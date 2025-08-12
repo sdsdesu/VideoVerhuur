@@ -1,0 +1,13 @@
+﻿@model Film
+@{
+    ViewData["Title"] = "VerwijderPagina";
+}
+
+<h1>Verwijder gehuurde film</h1>
+<p>"<strong>@Model.Titel</strong>" verwijderen van jouw winkelmandje</p>
+<form asp-action="VerwijderFilm" asp-controller="HuurController" method="post">
+    <input type="hidden" asp-for="FilmId" />
+    <button type="submit" class="btn btn-danger">Ja</button>
+    <button type="button" class="btn btn-secondary" onclick="window.history.back();">Nee</button>
+</form> 
+

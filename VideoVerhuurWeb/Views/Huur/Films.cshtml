@@ -1,0 +1,39 @@
+﻿@model SelecteerFilmViewModel
+@{
+    ViewData["Title"] = "Films";
+}
+
+<h1>@Model.Genre</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Titel</th>
+            <th>Prijs</th>
+            <th>In voorraad</th>
+            <th>Huren</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var film in Model.Films)
+        {
+            <tr>
+                <td>@film.Titel</td>
+                <tb>@film.Prijs</tb>
+                <td>@film.InVoorraad</td>
+                <td>
+                    @if (film.InVoorraad > 0)
+                    {
+                        <a asp-action="HuurFilm" asp-controller="HuurController" asp-route-filmId="@film.FilmId">
+                            <img src="~/images/plus.jpg" alt="Huur Film" />
+                        </a>
+                    }
+
+                </td>
+
+
+
+            </tr>
+        }
+    </tbody>
+</table>

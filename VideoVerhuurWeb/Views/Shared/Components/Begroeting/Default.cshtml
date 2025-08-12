@@ -1,0 +1,14 @@
+﻿@model string
+
+@if (!string.IsNullOrEmpty(Model))
+{
+    <div>
+        Welkom, @Model !
+    </div>
+}
+else
+{
+    <div>
+        Welkom! Meld je aan om te kunnen huren
+    </div>
+}

@@ -1,0 +1,120 @@
+﻿
+using Microsoft.AspNetCore.Mvc;
+using VideoVerhuurServices;
+using VideoVerhuurWeb.Models;
+
+namespace VideoVerhuurWeb.Controllers
+{
+    public class HuurController : Controller
+    {
+        private readonly FilmService filmService;
+        private readonly LoginService klantService;
+
+        public HuurController(FilmService filmService, LoginService klantService)
+        {
+            this.filmService = filmService;
+            this.klantService = klantService;
+        }
+
+        public IActionResult Index()
+        {
+            var genres = filmService.GetGenres();
+            return View(genres);
+        }
+        public IActionResult Films(int id) {
+            string genreNaam = filmService.getGenreNaam(id);
+            var films = filmService.GetFilms(id);
+            SelecteerFilmViewModel viewModel = new SelecteerFilmViewModel
+            {
+                Genre = genreNaam,
+                Films = films.ToList()
+            };
+            return View(viewModel);
+        }
+
+        public IActionResult Huren(int id) {
+            var filmVoorwinkelmandSession = filmService.GetFilmVoorWinkelmand(id);
+            string winkelmand = HttpContext.Session.GetString("Winkelmand");
+            if (string.IsNullOrEmpty(winkelmand))
+            {
+                winkelmand = $"{filmVoorwinkelmandSession.FilmId}";
+            }
+            else
+            {
+                winkelmand += $",{filmVoorwinkelmandSession.FilmId}";
+            }
+            return RedirectToAction(winkelmand, "Winkelmand");
+
+        }
+
+        public IActionResult Winkelmand()
+        {
+            string winkelmand = HttpContext.Session.GetString("Winkelmand");
+            if (string.IsNullOrEmpty(winkelmand))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var filmIds = winkelmand.Split(',').Select(int.Parse);
+            var films = filmService.GetFilms(filmIds);
+            return View(films);
+        }
+
+        public IActionResult VerwijderPagina(int id) {
+            var film = filmService.GetFilmVoorWinkelmand(id);
+            return View(film);
+
+        }
+        [HttpPost]
+        public IActionResult Verwijderen(int id) {
+            string oudeWinkelmand = HttpContext.Session.GetString("Winkelmand");
+            var filmIds = oudeWinkelmand.Split(',').Select(int.Parse);
+            filmIds.Aggregate(new List<int>(), (list, filmId) =>
+            {
+                if (filmId != id)
+                {
+                    list.Add(filmId);
+                }
+                return list;
+            });
+            string nieuweWinkelmand = string.Join(",", filmIds);
+            HttpContext.Session.SetString("Winkelmand", nieuweWinkelmand);
+            return RedirectToAction(nameof(Winkelmand));
+        }
+
+        public IActionResult Huuren()
+        {
+            string winkelmand = HttpContext.Session.GetString("Winkelmand");
+            IEnumerable<int> filmIds = winkelmand.Split(',').Select(int.Parse);
+            var films = filmService.GetFilms(filmIds);
+            int klantId = (int)HttpContext.Session.GetInt32("klantId");
+            var klant = klantService.GetKlant(klantId);
+            
+            filmService.ToevoegenAanVerhuringen(filmIds, klantId);
+            
+            RekeningViewModel viewModel = new RekeningViewModel() {
+                Naam = klant.Naam,
+                Films = films.ToList(),
+                Adres = klant.Straat_Nr,
+                Gemeente = klant.Gemeente
+            };  
+
+
+
+            HttpContext.Session.Remove("Winkelmand");
+
+
+
+            return View(viewModel);
+            
+
+        }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("KlantNaam");
+            HttpContext.Session.Remove("KlantId");
+            HttpContext.Session.Remove("Winkelmand");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+    }
+}
