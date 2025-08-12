@@ -1,12 +1,22 @@
-﻿@model IEnumerable<Genre>
+﻿@model GenreViewModel
 @{
     ViewData["Title"] = "Index";
 }
 
-<div>Klik op het gewenste GENRE</div>
-@foreach (var genre in Model)
+<div class="blauwe-box">Klik op het gewenste GENRE</div>
+<br/>
+@foreach (var genre in Model.Genres)
 {
 
-    <a asp-action="Films" asp-controller="Huurcontroler" asp-route-id="@genre.GenreId">@genre.GenreNaam </a>
-
+    <!-- <a asp-action="Films" asp-controller="Huurcontroler" asp-route-id="@genre.GenreId">@genre.GenreNaam </a>-->
+    <a asp-action="Films" asp-controller="Huur" asp-route-genreNaam="@genre.GenreNaam">@genre.GenreNaam </a>
 }
+<br />
+<br />
+<br />
+@if(Model.heeftWinkelmand==true){
+    <a asp-action="Winkelmand"><button class="btn btn-primary">Winkelmand</button></a>
+    }
+<br />
+
+

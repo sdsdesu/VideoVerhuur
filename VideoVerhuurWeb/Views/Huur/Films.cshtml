@@ -19,13 +19,14 @@
         {
             <tr>
                 <td>@film.Titel</td>
-                <tb>@film.Prijs</tb>
+                <td>@film.Prijs</td>
                 <td>@film.InVoorraad</td>
                 <td>
+
                     @if (film.InVoorraad > 0)
                     {
-                        <a asp-action="HuurFilm" asp-controller="HuurController" asp-route-filmId="@film.FilmId">
-                            <img src="~/images/plus.jpg" alt="Huur Film" />
+                        <a asp-action="Huren" asp-route-id="@film.FilmId">
+                            <img class="kleinSymbool" src="~/Images/plus.png" alt="Huur Film" />
                         </a>
                     }
 

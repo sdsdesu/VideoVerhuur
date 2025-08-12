@@ -24,12 +24,15 @@ namespace VideoVerhuurData.Repositories
         public Klant GetKlant(string naam, string postcode)
         {
             return context.Klanten
-                .FirstOrDefault(k => k.Naam == naam && k.Postcode == postcode);
+                .FirstOrDefault(k => k.Naam.ToUpper() == naam.ToUpper() && k.Postcode == postcode);
         }
 
         public bool ValidateLogin(string naam, string postcode)
         {
-            return context.Klanten.Any(k => k.Naam == naam && k.Postcode == postcode);
+
+            
+
+            return context.Klanten.Any(k => k.Naam.ToUpper() == naam.ToUpper());;
         }
     }
 }

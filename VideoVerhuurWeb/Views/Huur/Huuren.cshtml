@@ -5,7 +5,7 @@
 
 <h1>Afrekenen</h1>
 
-<table>
+<table class="rekening-Tabel">
     <thead>
         <tr>
             <th>Titel</th>
@@ -27,13 +27,13 @@
             <td><strong>€ @Model.TotaalPrijs</strong></td>
     </tbody>
 </table>
-
+<br/>
 <div>Word gefacteerd aan:</div>
-<p><strong>@Model.Naam</strong></p>
-<p><strong>@Model.Adres</strong></p>
-<p><strong>@Model.Gemeente</strong></p>
+<p>@Model.Naam</p>
+<p>@Model.Adres</p>
+<p>@Model.Gemeente</p>
 
 <br />
 <br/>
-
+<a asp-action="Index"><button class="btn btn-primary">Terug Naar genre overzicht</button></a>
 

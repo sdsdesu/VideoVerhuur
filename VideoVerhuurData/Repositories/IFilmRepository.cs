@@ -11,6 +11,7 @@ namespace VideoVerhuurData.Repositories
     {
         public IEnumerable<Genre> GetGenres();
         public IEnumerable<Film> GetFilms(int genreId);
+        public IEnumerable<Film> GetFilms(string genreNaam);
         public IEnumerable<Film> GetFilms(IEnumerable<int> filmIds);
         public bool FilmInVoorraad(int filmId);
         public Film GetFilmVoorWinkelmand(int id);

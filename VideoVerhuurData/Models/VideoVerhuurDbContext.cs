@@ -16,7 +16,11 @@ namespace VideoVerhuurData.Models
         public DbSet<Film> Films { get; set; }
         public DbSet<Klant> Klanten { get; set; }
         public DbSet<Genre> Genres { get; set; }
-        public DbSet<Verhuring> Verhuuringen { get; set; }
+        public DbSet<Verhuring> Verhuringen { get; set; }
        
+
+
+
+
     }
 }

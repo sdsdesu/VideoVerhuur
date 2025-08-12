@@ -21,6 +21,6 @@ namespace VideoVerhuurData.Models
         public decimal Prijs { get; set; }
         public int TotaalVerhuurd { get; set; }
 
-
+        public virtual Genre Genre { get; set; }
     }
 }

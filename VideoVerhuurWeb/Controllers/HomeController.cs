@@ -34,7 +34,7 @@ public class HomeController : Controller
                     int klantId = klant.KlantId;
                     HttpContext.Session.SetString("KlantNaam", klantNaam);
                     HttpContext.Session.SetInt32("KlantId", klantId);
-                    return RedirectToAction(nameof(HuurController.Index), "index");
+                    return RedirectToAction("index","Huur");
                 }
                 ModelState.AddModelError("", "Onbekende klant, probeer opnieuw.");
             }
@@ -43,13 +43,9 @@ public class HomeController : Controller
         {
             ModelState.AddModelError("", $"Er is een fout opgetreden: {ex.Message}");
         }
-        return View(loginViewModel);
+        return View("Index");
     }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

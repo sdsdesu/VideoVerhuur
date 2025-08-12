@@ -15,13 +15,24 @@ namespace VideoVerhuurWeb.Controllers
             this.filmService = filmService;
             this.klantService = klantService;
         }
-
+        [HttpGet]
         public IActionResult Index()
         {
+
             var genres = filmService.GetGenres();
-            return View(genres);
+            string winkelmand = HttpContext.Session.GetString("Winkelmand");
+            bool winkelmandLeeg = string.IsNullOrEmpty(winkelmand);
+            GenreViewModel viewModel = new GenreViewModel
+            {
+                Genres = genres.ToList(),
+                heeftWinkelmand = !winkelmandLeeg
+            };
+
+
+
+            return View(viewModel);
         }
-        public IActionResult Films(int id) {
+        /*public IActionResult Films(int id) {
             string genreNaam = filmService.getGenreNaam(id);
             var films = filmService.GetFilms(id);
             SelecteerFilmViewModel viewModel = new SelecteerFilmViewModel
@@ -30,7 +41,20 @@ namespace VideoVerhuurWeb.Controllers
                 Films = films.ToList()
             };
             return View(viewModel);
+        }*/
+        public IActionResult Films(string genreNaam)
+        {
+            var films = filmService.GetFilms(genreNaam);
+            SelecteerFilmViewModel viewModel = new SelecteerFilmViewModel
+            {
+                Genre = genreNaam,
+                Films = films.ToList()
+            };
+            return View(viewModel);
         }
+
+
+
 
         public IActionResult Huren(int id) {
             var filmVoorwinkelmandSession = filmService.GetFilmVoorWinkelmand(id);
@@ -43,7 +67,8 @@ namespace VideoVerhuurWeb.Controllers
             {
                 winkelmand += $",{filmVoorwinkelmandSession.FilmId}";
             }
-            return RedirectToAction(winkelmand, "Winkelmand");
+            HttpContext.Session.SetString("Winkelmand", winkelmand);
+            return RedirectToAction("Winkelmand");
 
         }
 
@@ -61,22 +86,34 @@ namespace VideoVerhuurWeb.Controllers
 
         public IActionResult VerwijderPagina(int id) {
             var film = filmService.GetFilmVoorWinkelmand(id);
-            return View(film);
+
+            VerwijderenViewModel viewModel = new VerwijderenViewModel
+            {
+                Id = film.FilmId,
+                Title = film.Titel
+            };
+            return View(viewModel);
 
         }
         [HttpPost]
-        public IActionResult Verwijderen(int id) {
+        public IActionResult Verwijderen(VerwijderenViewModel verwijderen) {
             string oudeWinkelmand = HttpContext.Session.GetString("Winkelmand");
-            var filmIds = oudeWinkelmand.Split(',').Select(int.Parse);
-            filmIds.Aggregate(new List<int>(), (list, filmId) =>
+            IEnumerable<int> filmIds = oudeWinkelmand.Split(',').Select(int.Parse);
+            string nieuweWinkelmand = string.Empty;
+            foreach (var filmId in filmIds)
             {
-                if (filmId != id)
+                if (filmId != verwijderen.Id)
                 {
-                    list.Add(filmId);
+                    if (!string.IsNullOrEmpty(nieuweWinkelmand))
+                    {
+                        nieuweWinkelmand += ",";
+                    }
+                    nieuweWinkelmand += $"{filmId}";
                 }
-                return list;
-            });
-            string nieuweWinkelmand = string.Join(",", filmIds);
+            }
+
+
+            
             HttpContext.Session.SetString("Winkelmand", nieuweWinkelmand);
             return RedirectToAction(nameof(Winkelmand));
         }
@@ -86,10 +123,10 @@ namespace VideoVerhuurWeb.Controllers
             string winkelmand = HttpContext.Session.GetString("Winkelmand");
             IEnumerable<int> filmIds = winkelmand.Split(',').Select(int.Parse);
             var films = filmService.GetFilms(filmIds);
-            int klantId = (int)HttpContext.Session.GetInt32("klantId");
-            var klant = klantService.GetKlant(klantId);
+            var klantId = HttpContext.Session.GetInt32("KlantId");
+            var klant = klantService.GetKlant((int)klantId);
             
-            filmService.ToevoegenAanVerhuringen(filmIds, klantId);
+            filmService.ToevoegenAanVerhuringen(filmIds, (int)klantId);
             
             RekeningViewModel viewModel = new RekeningViewModel() {
                 Naam = klant.Naam,

@@ -21,8 +21,8 @@
                 <td>@film.Prijs</td>
                 <td>
 
-                    <a asp-action="VerwijderPagina" asp-controller="HuurController" asp-route-id="@film.FilmId">
-                            <img src="~/images/delete.jpg" alt="UitMantje halen" />
+                    <a asp-action="VerwijderPagina" asp-route-id="@film.FilmId">
+                        <img class="kleinSymbool" src="~/Images/delete.png" alt="UitMantje halen" />
                         </a>
                     
                 </td>
@@ -30,4 +30,5 @@
         }
 
 </table>
-
+<a asp-action="Index"><button class="btn btn-primary">Verder winkelen</button></a>
+<a asp-action="Huuren"><button class="btn btn-primary">Afrekenen</button></a>

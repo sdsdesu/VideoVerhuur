@@ -23,6 +23,10 @@ namespace VideoVerhuurServices
         {
             return filmRepository.GetFilms(genreId);
         }
+        public IEnumerable<Film> GetFilms(string genreNaam)
+        {
+            return filmRepository.GetFilms(genreNaam);
+        }
         public IEnumerable<Film> GetFilms(IEnumerable<int> filmIds)
         {
             return filmRepository.GetFilms(filmIds);

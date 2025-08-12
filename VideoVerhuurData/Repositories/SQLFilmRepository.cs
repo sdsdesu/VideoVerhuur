@@ -52,7 +52,27 @@ namespace VideoVerhuurData.Repositories
 
         public void ToevoegenAanVerhuringen(IEnumerable<int> filmIds, int klantId)
         {
-            throw new NotImplementedException();
+            context.Verhuringen.AddRange(
+                filmIds.Select(filmId => new Verhuring
+                {
+                    FilmId = filmId,
+                    KlantId = klantId,
+                    VerhuurDatum = DateTime.Now
+                })
+            );
+            // Verminder de voorraad van de films
+            foreach (var filmId in filmIds)
+            {
+                var film = context.Films.Find(filmId);
+                if (film != null && film.InVoorraad > 0)
+                {
+                    film.InVoorraad--;
+                    film.TotaalVerhuurd++;
+                    film.UitVoorraad++;
+                }
+            }
+
+            context.SaveChanges();
         }
 
         public string GetGenreNaam(int genreId)
@@ -61,6 +81,14 @@ namespace VideoVerhuurData.Repositories
                 .Where(g => g.GenreId == genreId)
                 .Select(g => g.GenreNaam)
                 .FirstOrDefault();
+        }
+
+        public IEnumerable<Film> GetFilms(string genreNaam)
+        {
+            return context.Films
+                .Where(f => f.Genre.GenreNaam == genreNaam)
+                .OrderBy(f => f.Titel)
+                .ToList();
         }
     }
 }

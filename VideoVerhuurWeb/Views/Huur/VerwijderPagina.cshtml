@@ -1,13 +1,15 @@
-﻿@model Film
+﻿@model VerwijderenViewModel
 @{
     ViewData["Title"] = "VerwijderPagina";
 }
 
 <h1>Verwijder gehuurde film</h1>
-<p>"<strong>@Model.Titel</strong>" verwijderen van jouw winkelmandje</p>
-<form asp-action="VerwijderFilm" asp-controller="HuurController" method="post">
-    <input type="hidden" asp-for="FilmId" />
-    <button type="submit" class="btn btn-danger">Ja</button>
-    <button type="button" class="btn btn-secondary" onclick="window.history.back();">Nee</button>
+<p>"<strong>@Model.Title</strong>" verwijderen van jouw winkelmandje</p>
+<form asp-action="Verwijderen" method="post">
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+    <input type="hidden" asp-for="Title" value="@Model.Title" />
+    <button type="submit" class="btn btn-danger" >Ja</button>
+    <button type="button" class="btn btn-primary" onclick="window.history.back();">Nee</button>
 </form> 
+
 

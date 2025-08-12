@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using VideoVerhuurData.Models;
 
 namespace VideoVerhuurWeb.ViewComponents
 {
@@ -6,12 +7,13 @@ namespace VideoVerhuurWeb.ViewComponents
     {
         public IViewComponentResult Invoke()
         {
+            
             if (HttpContext.Session.GetString("KlantNaam") == null)
                 return View("");
             else
             {
                 string klantNaam = HttpContext.Session.GetString("KlantNaam");
-                return View(klantNaam);
+                return View("",klantNaam);
             }
         }
         
