@@ -30,9 +30,9 @@ namespace VideoVerhuurData.Repositories
         public bool ValidateLogin(string naam, string postcode)
         {
 
-            
 
-            return context.Klanten.Any(k => k.Naam.ToUpper() == naam.ToUpper());;
+
+            return context.Klanten.Any(k => k.Naam.ToUpper() == naam.ToUpper()); ;
         }
     }
 }

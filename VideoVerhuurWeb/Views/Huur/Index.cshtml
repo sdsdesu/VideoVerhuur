@@ -4,7 +4,7 @@
 }
 
 <div class="blauwe-box">Klik op het gewenste GENRE</div>
-<br/>
+<br />
 @foreach (var genre in Model.Genres)
 {
 
@@ -14,9 +14,10 @@
 <br />
 <br />
 <br />
-@if(Model.heeftWinkelmand==true){
+@if (Model.heeftWinkelmand == true)
+{
     <a asp-action="Winkelmand"><button class="btn btn-primary">Winkelmand</button></a>
-    }
+}
 <br />
 
 

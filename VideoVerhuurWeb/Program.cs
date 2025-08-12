@@ -7,11 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<VideoVerhuurDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("VideoVerhuurConnection"), x => x.MigrationsAssembly("VideoVerhuurData"))); 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("VideoVerhuurConnection"), x => x.MigrationsAssembly("VideoVerhuurData")));
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<LoginService>();
-builder.Services.AddTransient<ILoginRepository, SQLLoginRepository>(); 
+builder.Services.AddTransient<ILoginRepository, SQLLoginRepository>();
 builder.Services.AddTransient<FilmService>();
 builder.Services.AddTransient<IFilmRepository, SQLFilmRepository>();
 builder.Services.AddSession();

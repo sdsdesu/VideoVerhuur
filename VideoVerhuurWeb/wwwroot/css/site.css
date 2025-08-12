@@ -52,15 +52,15 @@ ul {
     width: 100%;
     border-collapse: collapse;
 }
+
 a {
-    
     text-decoration: none;
 }
 
-    .rekening-Tabel th, .rekening-Tabel td {
-        padding: 8px;
-    }
+.rekening-Tabel th, .rekening-Tabel td {
+    padding: 8px;
+}
 
-    .rekening-Tabel td {
-        border-top: 1px solid #ddd;
-    }
+.rekening-Tabel td {
+    border-top: 1px solid #ddd;
+}

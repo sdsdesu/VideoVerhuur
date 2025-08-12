@@ -56,7 +56,8 @@ namespace VideoVerhuurWeb.Controllers
 
 
 
-        public IActionResult Huren(int id) {
+        public IActionResult Huren(int id)
+        {
             var filmVoorwinkelmandSession = filmService.GetFilmVoorWinkelmand(id);
             string winkelmand = HttpContext.Session.GetString("Winkelmand");
             if (string.IsNullOrEmpty(winkelmand))
@@ -84,7 +85,8 @@ namespace VideoVerhuurWeb.Controllers
             return View(films);
         }
 
-        public IActionResult VerwijderPagina(int id) {
+        public IActionResult VerwijderPagina(int id)
+        {
             var film = filmService.GetFilmVoorWinkelmand(id);
 
             VerwijderenViewModel viewModel = new VerwijderenViewModel
@@ -96,7 +98,8 @@ namespace VideoVerhuurWeb.Controllers
 
         }
         [HttpPost]
-        public IActionResult Verwijderen(VerwijderenViewModel verwijderen) {
+        public IActionResult Verwijderen(VerwijderenViewModel verwijderen)
+        {
             string oudeWinkelmand = HttpContext.Session.GetString("Winkelmand");
             IEnumerable<int> filmIds = oudeWinkelmand.Split(',').Select(int.Parse);
             string nieuweWinkelmand = string.Empty;
@@ -113,7 +116,7 @@ namespace VideoVerhuurWeb.Controllers
             }
 
 
-            
+
             HttpContext.Session.SetString("Winkelmand", nieuweWinkelmand);
             return RedirectToAction(nameof(Winkelmand));
         }
@@ -125,15 +128,16 @@ namespace VideoVerhuurWeb.Controllers
             var films = filmService.GetFilms(filmIds);
             var klantId = HttpContext.Session.GetInt32("KlantId");
             var klant = klantService.GetKlant((int)klantId);
-            
+
             filmService.ToevoegenAanVerhuringen(filmIds, (int)klantId);
-            
-            RekeningViewModel viewModel = new RekeningViewModel() {
+
+            RekeningViewModel viewModel = new RekeningViewModel()
+            {
                 Naam = klant.Naam,
                 Films = films.ToList(),
                 Adres = klant.Straat_Nr,
                 Gemeente = klant.Gemeente
-            };  
+            };
 
 
 
@@ -142,7 +146,7 @@ namespace VideoVerhuurWeb.Controllers
 
 
             return View(viewModel);
-            
+
 
         }
         public IActionResult Logout()

@@ -14,6 +14,6 @@ namespace VideoVerhuurData.Models
         [Key]
         public int GenreId { get; set; }
         public string GenreNaam { get; set; }
-        
+
     }
 }

@@ -3,7 +3,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-<form method="post" asp-action="Index" >
+<form method="post" asp-action="Index">
     <div class="form-group">
         <label asp-for="Naam"></label>
         <input asp-for="Naam" class="form-control" />
@@ -15,6 +15,6 @@
         <span asp-validation-for="Postcode" class="text-danger"></span>
     </div>
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <br/>
+    <br />
     <button type="submit" class="btn btn-primary">Aanmelden</button>
 </form>

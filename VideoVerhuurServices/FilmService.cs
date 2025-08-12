@@ -44,7 +44,7 @@ namespace VideoVerhuurServices
             return filmRepository.FilmInVoorraad(filmId);
 
         }
-        public string getGenreNaam(int id) 
+        public string getGenreNaam(int id)
         {
             return filmRepository.GetGenreNaam(id);
         }

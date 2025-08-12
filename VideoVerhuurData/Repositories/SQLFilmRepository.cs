@@ -18,10 +18,10 @@ namespace VideoVerhuurData.Repositories
 
         public bool FilmInVoorraad(int filmId)
         {
-           return context.Films
-                .Where(f => f.FilmId == filmId)
-                .Select(f => f.InVoorraad > 0)
-                .FirstOrDefault();
+            return context.Films
+                 .Where(f => f.FilmId == filmId)
+                 .Select(f => f.InVoorraad > 0)
+                 .FirstOrDefault();
         }
 
 
