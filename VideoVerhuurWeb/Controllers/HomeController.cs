@@ -1,7 +1,9 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using VideoVerhuurServices;
+
 using VideoVerhuurWeb.Models;
+using VideoVerhuurWeb.Services;
+
 
 namespace VideoVerhuurWeb.Controllers;
 
@@ -30,11 +32,7 @@ public class HomeController : Controller
 
                 if (service.ValidateLogin(loginViewModel.Naam, loginViewModel.Postcode))
                 {
-                    var klant = service.GetKlant(loginViewModel.Naam, loginViewModel.Postcode);
-                    string klantNaam = $"{klant.Voornaam} {klant.Naam}";
-                    int klantId = klant.KlantId;
-                    HttpContext.Session.SetString("KlantNaam", klantNaam);
-                    HttpContext.Session.SetInt32("KlantId", klantId);
+                    service.login(loginViewModel.Naam, loginViewModel.Postcode);
                     return RedirectToAction("index", "Huur");
                 }
                 ModelState.AddModelError("", "Onbekende klant, probeer opnieuw.");

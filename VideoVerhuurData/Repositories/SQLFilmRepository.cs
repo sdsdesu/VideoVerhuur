@@ -35,9 +35,11 @@ namespace VideoVerhuurData.Repositories
 
         public IEnumerable<Film> GetFilms(IEnumerable<int> filmIds)
         {
-            return context.Films
+                return context.Films
                 .Where(f => filmIds.Contains(f.FilmId))
                 .ToList();
+           
+           
         }
 
         public Film GetFilmVoorWinkelmand(int id)

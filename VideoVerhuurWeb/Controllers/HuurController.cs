@@ -1,7 +1,8 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using VideoVerhuurServices;
+using VideoVerhuurWeb.Services;
 using VideoVerhuurWeb.Models;
+using VideoVerhuurData.Models;
 
 namespace VideoVerhuurWeb.Controllers
 {
@@ -20,12 +21,11 @@ namespace VideoVerhuurWeb.Controllers
         {
 
             var genres = filmService.GetGenres();
-            string winkelmand = HttpContext.Session.GetString("Winkelmand");
-            bool winkelmandLeeg = string.IsNullOrEmpty(winkelmand);
+            
             GenreViewModel viewModel = new GenreViewModel
             {
                 Genres = genres.ToList(),
-                heeftWinkelmand = !winkelmandLeeg
+                heeftWinkelmand = !filmService.HeeftWinkelmand()
             };
 
 
@@ -58,31 +58,20 @@ namespace VideoVerhuurWeb.Controllers
 
         public IActionResult Huren(int id)
         {
-            var filmVoorwinkelmandSession = filmService.GetFilmVoorWinkelmand(id);
-            string winkelmand = HttpContext.Session.GetString("Winkelmand");
-            if (string.IsNullOrEmpty(winkelmand))
-            {
-                winkelmand = $"{filmVoorwinkelmandSession.FilmId}";
-            }
-            else
-            {
-                winkelmand += $",{filmVoorwinkelmandSession.FilmId}";
-            }
-            HttpContext.Session.SetString("Winkelmand", winkelmand);
+            filmService.Huren(id);
             return RedirectToAction("Winkelmand");
 
         }
 
         public IActionResult Winkelmand()
         {
-            string winkelmand = HttpContext.Session.GetString("Winkelmand");
-            if (string.IsNullOrEmpty(winkelmand))
+            
+            if (!filmService.HeeftWinkelmand())
             {
                 return RedirectToAction(nameof(Index));
             }
-            var filmIds = winkelmand.Split(',').Select(int.Parse);
-            var films = filmService.GetFilms(filmIds);
-            return View(films);
+            else
+                return View(filmService.GetFilmsInWinkelmand());
         }
 
         public IActionResult VerwijderPagina(int id)
@@ -100,36 +89,15 @@ namespace VideoVerhuurWeb.Controllers
         [HttpPost]
         public IActionResult Verwijderen(VerwijderenViewModel verwijderen)
         {
-            string oudeWinkelmand = HttpContext.Session.GetString("Winkelmand");
-            IEnumerable<int> filmIds = oudeWinkelmand.Split(',').Select(int.Parse);
-            string nieuweWinkelmand = string.Empty;
-            foreach (var filmId in filmIds)
-            {
-                if (filmId != verwijderen.Id)
-                {
-                    if (!string.IsNullOrEmpty(nieuweWinkelmand))
-                    {
-                        nieuweWinkelmand += ",";
-                    }
-                    nieuweWinkelmand += $"{filmId}";
-                }
-            }
-
-
-
-            HttpContext.Session.SetString("Winkelmand", nieuweWinkelmand);
+            filmService.VerwijderVanWinkelmand(verwijderen.Id);
             return RedirectToAction(nameof(Winkelmand));
         }
 
         public IActionResult Huuren()
         {
-            string winkelmand = HttpContext.Session.GetString("Winkelmand");
-            IEnumerable<int> filmIds = winkelmand.Split(',').Select(int.Parse);
-            var films = filmService.GetFilms(filmIds);
-            var klantId = HttpContext.Session.GetInt32("KlantId");
-            var klant = klantService.GetKlant((int)klantId);
-
-            filmService.ToevoegenAanVerhuringen(filmIds, (int)klantId);
+            Klant klant = klantService.GetKlant();
+            var films = filmService.GetFilmsInWinkelmand();
+            filmService.AllesWinkelmandVerhuren(klant.KlantId);
 
             RekeningViewModel viewModel = new RekeningViewModel()
             {
@@ -151,9 +119,7 @@ namespace VideoVerhuurWeb.Controllers
         }
         public IActionResult Logout()
         {
-            HttpContext.Session.Remove("KlantNaam");
-            HttpContext.Session.Remove("KlantId");
-            HttpContext.Session.Remove("Winkelmand");
+            klantService.logout();
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 

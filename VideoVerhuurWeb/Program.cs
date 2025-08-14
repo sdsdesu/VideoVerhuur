@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using VideoVerhuurData.Models;
 using VideoVerhuurData.Repositories;
-using VideoVerhuurServices;
+using VideoVerhuurWeb.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,11 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<VideoVerhuurDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("VideoVerhuurConnection"), x => x.MigrationsAssembly("VideoVerhuurData")));
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<LoginService>();
 builder.Services.AddTransient<ILoginRepository, SQLLoginRepository>();
 builder.Services.AddTransient<FilmService>();
 builder.Services.AddTransient<IFilmRepository, SQLFilmRepository>();
+
 builder.Services.AddSession();
 
 

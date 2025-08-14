@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VideoVerhuurData.Models;
 
@@ -11,9 +12,11 @@ using VideoVerhuurData.Models;
 namespace VideoVerhuurData.Migrations
 {
     [DbContext(typeof(VideoVerhuurDbContext))]
-    partial class VideoVerhuurDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250814090433_aanpassingen")]
+    partial class aanpassingen
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

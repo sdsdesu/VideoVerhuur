@@ -20,8 +20,8 @@ namespace VideoVerhuurData.Models
         public int FilmId { get; set; }
         public DateTime VerhuurDatum { get; set; }
 
-        public virtual Klant Klant { get; set; }
-        public virtual Film Film { get; set; }
+        public Klant Klant { get; set; }
+        public Film Film { get; set; }
 
     }
 }
